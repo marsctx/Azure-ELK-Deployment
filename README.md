@@ -2,7 +2,7 @@
 
 The files in this repository were used to configure the network depicted below.
 
-[[https://github.com/marsctx/Azure-ELK-Deployment/blob/master/Imgages/ELK_Network.png]
+[[https://github.com/marsctx/Azure-ELK-Deployment/Images/ELK_Network.png]
 
 These files have been tested and used to generate a live ELK deployment with an Azure container network using ansible. The information included below can be used to either recreate the entire deployment pictured above or information included can be used to install specific portions of the project.
 
