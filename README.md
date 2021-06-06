@@ -4,7 +4,7 @@ The files in this repository were used to configure the network depicted below.
 
 ![ELK%20Network](ELK%20Network.png)
 
-These files have been tested and used to generate a live ELK deployment with an Azure container network using ansible. The information included below can be used to either recreate the entire deployment pictured above or information included can be used to install specific portions of the project.
+These files have been tested and used to generate a live ELK deployment with an Azure container network using ansible. The information provided in this repository can be used to either recreate the entire deployment pictured above or install specific portions of the project.
 
 - ansible
 
@@ -21,29 +21,35 @@ This document contains the following details:
 
 The main purpose of this network is to utilize a load-balanced and monitored instances of DVWA, the D*mn Vulnerable Web Application.  DVWA is an intentionally exploitable website designed to allow for the most common vulnerabilities. The network included in this repository provides redundancy from these attacks while monitoring the network traffic to expose these common exploits.
 
-A Load Balancer establishes an external IP address for which all web applications can be accessed by the internet. This ensure that the application will be highly available by distributing incoming network traffic uniformly across a backend server pool. In this instance the Load Balancer is used to limit access to the web application to a single IP address for reasearch purposes of the user.  
+A Load Balancer establishes an external IP address for which all web applications can be accessed by the internet. This ensures that the application will be highly accessible by distributing incoming network traffic uniformly across a backend server pool. In this instance the Load Balancer is also used to limit access to the web application to a single IP address for reasearch purposes of the user.
 
 Including a Jump Box provisioner further restricts network exposure to the backend pool by only allowing SSH access and public key authentication to the network so that updates to the congfiguration files can be made to the Docker containers only by the user.  Rules were established through the Network Security Group to limit external access and a virtual network was deployed to include the web servers.
 
-Integrating an ELK server allows users to easily monitor the vulnerable web application for changes to the file systems and system metrics.  Important information is collected and analyzed by Kabana through the Elasticsearch engine where Filebeat and Metricbeat are used for logging changes to the ELK server.  Configuration YAML files were installed using ansible playbooks that are detailed below.  
+Integrating an ELK server allows users to easily monitor the vulnerable web application for changes to the file systems and system metrics.  Important information is collected and analyzed by Kabana through the Elasticsearch engine where Filebeat and Metricbeat are used for logging changes to the ELK server.  Configuration and YAML files were installed using ansible playbooks that are included in this reporsitory.
 
 Configuration details of each machine:
 
 | Name     | Function   | IP Address | Operating System |
 |----------|------------|------------|------------------|
 | Jump Box | Gateway    | 10.0.0.1   | Linux            |
-| Web-1    | Web Server | 10.0.0.5   | Linux            |
-| Web-2    | Web Server | 10.0.0.6   | Linux            |
-| Web-3    | Web Server | 10.0.0.7   | Linux            |
+| DVWA-1   | Web Server | 10.0.0.5   | Linux            |
+| DVWA-2   | Web Server | 10.0.0.6   | Linux            |
+| DVWA-3   | Web Server | 10.0.0.7   | Linux            |
 | ELK      | Monitoring | 10.1.0.4   | Linux            |
 
 ## Access Policies
 
-The machines on the internal network are not exposed to the public Internet.
+The machines on the internal network are not exposed to the public Internet.  Access to the internal network was established through SSH:22 and public key authentication to the Jump Box.  Commands to gernerate a public key and upload to the Jump Box provisoner from your local host are below:
 
-Only the Jump Box machine can accept connections from the Internet. Access to this machine is only allowed from the following IP addresses:
+- Open Git Bash and type the following command:
 
-- 89.187.164.244
+  - cat ~/.ssh/id_rsa.pub
+
+- Copy the SSH key string to the Administrator Account section.
+
+Only the Jump Box machine can accept connections from the Internet. Access to this machine is only allowed from the following IP address:
+
+- 172.58.99.163
 
 Machines within the network can only be accessed by the Jump Box.
 
@@ -51,25 +57,25 @@ A summary of the access policies in place can be found in the table below.
 
 | Name     | Publicly Accessible | Allowed IP Addresses |
 |----------|---------------------|----------------------|
-| Jump Box | Yes                 | 89.187.164.244       |
-| Web-1    | No                  |                      |
-| Web-2    | No                  |                      |
-| Web-3    | No                  |                      |
-| ELK      | No                  |                      |
+| Jump Box | Yes                 | 172.58.99.163        |
+| DVWA-1   | No                  | 10.0.0.0/24          |
+| DVWA-2   | No                  | 10.0.0.0/24          |
+| DVWA-3   | No                  | 10.0.0.0/24          |
+| ELK      | No                  | 10.0.0.0/16          |
 
 ## Elk Configuration
 
-Ansible was used to automate configuration of the ELK machine, no configuration was performed manually.  Automating configuration with Ansible allows for the repeated and immediate deployment of base configurations.  This also allows for improvements to be made in an immediately deployable instance and updating of already delpoyed applications.
+Ansible was used to automate configuration of the ELK server, no configurations were performed manually.  Automating configurations with Ansible allows for the repeated and immediate deployment of base configurations.  This also allows for improvements to be made in an immediately deployable instance and updating multiple containers instantaniously.
 
-- _TODO: What is the main advantage of automating configuration with Ansible?_
+The playbooks exicuted are included below:
 
-The playbook implements the following tasks:
+- Ansible
 
-- Install Docker
-- ...
-- ...
-- ...
-- ...
+- ELK
+
+- Filbeat
+
+- Metricbeat
 
 The following screenshot displays the result of running `docker ps` after successfully configuring the ELK instance.
 
