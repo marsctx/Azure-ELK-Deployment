@@ -39,21 +39,21 @@ Configuration details of each machine:
 
 ## Access Policies
 
-The machines on the internal network are not exposed to the public Internet.  Access to the internal network was established through SSH:22 and public key authentication to the Jump Box.  Commands to gernerate a public key and upload to the Jump Box provisoner from your local host are below:
+The machines on the internal network are not exposed to the public Internet.  Access to the internal network was established through SSH:22 and public key authentication to the Jump Box from the local host.  Instructions to upload RSA public key to the Jump Box provisoner from your local host are below:
 
-- Open Git Bash and type the following command:
+- Open Git Bash on you local host and type the following command:
 
   - cat ~/.ssh/id_rsa.pub
 
-- Copy the SSH key string to the Administrator Account section.
+- Copy your public RSA key string
 
-Only the Jump Box machine can accept connections from the Internet. Access to this machine is only allowed from the following IP address:
+- Paste to the Administrator Account section:
 
-- 172.58.99.163
+  - ![pub%20key](pub%20key.png)
 
-Machines within the network can only be accessed by the Jump Box.
+Only the Jump Box machine can accept connections from the Internet. Access to Jump Box has now been restricted to you local IP.
 
-A summary of the access policies in place can be found in the table below.
+A summary of the access policies within the network can be found in the table below.
 
 | Name     | Publicly Accessible | Allowed IP Addresses |
 |----------|---------------------|----------------------|
