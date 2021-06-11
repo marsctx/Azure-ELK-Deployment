@@ -98,7 +98,7 @@ The ELK playbook implements the following tasks:
 
 - Downloads and launches the docker ELK container
 
-!<Resources/install-elk/install-elk.yml>
+<Resources/install-elk/install-elk.yml>
 
 The following screenshot displays the result of running `docker ps` after successfully configuring the ELK instance.
 
