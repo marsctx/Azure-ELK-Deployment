@@ -137,5 +137,3 @@ SSH into the Jumbox from your localhost IP and ensure that your Ansible control 
 This will bring up the list of containers available through the Jumpbox.  Under the Status column you should read Up.  If not type sudo docker start container_name, your container name will be listed under the Names column from the previous command.  You will need to run sudo docker attach container_name to access you Ansible control node.
 
 Now that you are in the Ansible control node follow the instructions below to deploy your ELK container and Beats discussed in the previous section.
-
-
