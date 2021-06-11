@@ -45,7 +45,7 @@ In this deployment only the Jump Box can accept connections from the internet.  
 
 Using Network Security Groups further limited acccess to the web application by restricting accessability to TCP network traffic only from the localhost IP.
 
-A summary of the access policies can be found in the table below.
+A summary of the access policies can be found in the table below:
 
 | Name     | Publicly Accessible | Allowed IP Addresses |
 |----------|---------------------|----------------------|
@@ -59,11 +59,11 @@ A summary of the access policies can be found in the table below.
 
 In this deployment, two seperate Network Security Groups were used to further segment the Azure network.  The Jumpbox, DVWA servers, and Load Balancer were configured under a virtual network with a Network Security Group to set a short list of rules for access control. The ELK server and ELK Network Security Group were established under it's own dedicated Azure Virtual Network and Subnet with network peering configured to allow traffic to pass between the two.
 
-#### Web Servers and SSH Access
+#### Web Servers NSG
 
 With the rules below in the Network Security Group for the web servers all traffic is initially denied while establishing the network and securing the machines.  SSH access is granted to the localhost IP to the Jumpbox which is the gateway to the internal network via port 22 Jumpbox and SSH access rules.  With the Web Access rule a dedicated connection through port 80 is granted to the localhost IP as well which gives the user visability on the DVWA.
 
-Inbound Security Rules
+Inbound Security Rules:
 
 | Name           | Port | Protocol | Source         | Destination     |
 |----------------|------|----------|----------------|-----------------|
@@ -72,11 +72,11 @@ Inbound Security Rules
 | Jumpbox_Access | 22   | TCP      | 10.0.0.4       | Virtual Network |
 | Web_Access     | 80   | TCP      | 89.187.164.245 | Virtual Network |
 
-#### ELK Server
+#### ELK Server NSG
 
-The inbound rule for the ELK Server Network Security Group allows for access to the ELK UI through port 5601 from the localhost IP.  This limits access to the ELK monitoring network that has been configured.  Having the ELK server set to DHCP the IP address changes everytime the service is booted but can be accessed by typing server.ip:5601/app/kibana#/home in your browser.
+The inbound rule for the ELK Server Network Security Group allows for access to the ELK UI through port 5601 from the localhost IP.  This limits access to the ELK monitoring network that has been configured.  Having the ELK server set to DHCP the IP address changes everytime the service is booted but can be accessed by typing elk.vm.external.ip:5601/app/kibana in your browser.
 
-Inbound Security Rules
+Inbound Security Rules:
 
 | Name       | Port | Protocol | Source         | Destination     |
 |------------|------|----------|----------------|-----------------|
@@ -110,7 +110,7 @@ This ELK server is configured to monitor the following machines:
 - 10.0.0.6
 - 10.0.0.7
 
-The Beats installed on the web servers allow us to collect the following information:
+The following Beats were installed on the web servers were installed using playbooks and configuration files similar to the ELK server.  Short descriptions of the Beats and information collected to send to the ELK server are detailed below.
 
 ### Filebeat
 
@@ -118,7 +118,7 @@ The Beats installed on the web servers allow us to collect the following informa
 
 Filebeat is used to collect and transfer specific log files to the ELK engine.  The configuration file can be changed to harvest various log files and tailored to a user defined application.
 
-The modules enabled in the Filebeat configuration .yml file enable logs to be imported from the DVWA web servers to Elasticsearch.
+The modules enabled in the Filebeat configuration file extract logs from the DVWA web servers to be imported to Elasticsearch.
 
 ### Metricbeat
 
@@ -130,4 +130,12 @@ With Metricbeat, information can be periodically collected about the system or s
 
 In order to use the playbook, you will need to have an Ansible control node already configured.  The jump box in this deployment was used for this purpose.
 
-SSH into the control node and follow the steps below:
+SSH into the Jumbox from your localhost IP and ensure that your Ansible control node is running with the follwoing command:
+
+- sudo docker container list -a
+
+This will bring up the list of containers available through the Jumpbox.  Under the Status column you should read Up.  If not type sudo docker start container_name, your container name will be listed under the Names column from the previous command.  You will need to run sudo docker attach container_name to access you Ansible control node.
+
+Now that you are in the Ansible control node follow the instructions below to deploy your ELK container and Beats discussed in the previous section.
+
+
