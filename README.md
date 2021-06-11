@@ -37,7 +37,7 @@ Configuration details of each machine:
 
 ## Access Policies
 
-In this deployment only the Jump Box can accept connections from the Internet.  Access to the internal network was established through SSH with public key authentication to the Jump Box from the local host.  Internally, all servers can access one another.  
+In this deployment only the Jump Box can accept connections from the internet.  Access to the internal network was established through SSH with public key authentication to the Jump Box from the local host.  Internally, all servers can access one another.  
 
 Using Network Security Groups further limited acccess to the web applications by restricting accessability to TCP network traffic from the local host IP through port 80 and the ELK UI through port 5601.
 
@@ -94,7 +94,3 @@ With Metricbeat, information can be periodically collected about the system or s
 In order to use the playbook, you will need to have an Ansible control node already configured.  The jump box in this deployment was used for this purpose.
 
 SSH into the control node and follow the steps below:
-
-- Copy the playbooks file to the Ansible Control Node.
-- Update the _____ file to include...
-- Run the playbook, and navigate to ____ to check that the installation worked as expected.
