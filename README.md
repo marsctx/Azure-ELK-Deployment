@@ -83,7 +83,11 @@ The Beats installed on the web servers allow us to collect the following informa
 
 ### Filebeat
 
-Filebeat is used to collect and transfer specific log files to the ELK engine.  The configuration file can be changed to harvest various log files and tailored to a user defined application.  In this instance, Filebeat is used to collect Apache error logs but can be used to monitor system and wifi logs as well.
+- Filebeat Installation Playbook
+
+Filebeat is used to collect and transfer specific log files to the ELK engine.  The configuration file can be changed to harvest various log files and tailored to a user defined application.
+
+The modules enabled in the Filebeat configuration .yml file enable logs to be imported from the DVWA web servers to Elasticsearch.
 
 ### Metricbeat
 
