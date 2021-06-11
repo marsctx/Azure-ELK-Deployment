@@ -116,7 +116,7 @@ The following Beats were installed on the web servers were installed using playb
 
 ### Filebeat
 
-- ![Filebeat%20Installation%20Playbook](Resources/install-filebeat/filebeat.yml)
+- ![Filebeat Installation Playbook](Resources/install-filebeat/filebeat.yml)
 
 Filebeat is used to collect and transfer specific log files to the ELK engine.  The configuration file can be changed to harvest various log files and tailored to a user defined application.  The modules enabled in the Filebeat configuration file extract logs from the DVWA web servers to be included in the Elasticsearch engine.
 
@@ -124,7 +124,7 @@ Modules that were enabled are Elasticsearch, haproxy, kafka, kibana, nats, osque
 
 ### Metricbeat
 
-- ![Metricbeat%20Installation%20Playbook](Resources/install-metricbeat/metricbeat.yml)
+- ![Metricbeat Installation Playbook](Resources/install-metricbeat/metricbeat.yml)
 
 With Metricbeat, information can be periodically collected about the system or service monitored and sent to ELK for analysis.  Information such as CPU usage, SSH login attempts, failed sudo escalations, and CPU/RAM statistics are a few system metrics that can give an insight on what is occuring on the target server.  Metricbeat can also be used to monitor database activity and status on MySQL, PostgreSQL, and MongoDB.
 
