@@ -19,11 +19,13 @@ This document contains the following details:
 
 The main purpose of this network is to utilize a load-balanced and monitored instances of DVWA, the D*mn Vulnerable Web Application.  DVWA is an intentionally exploitable website designed to allow for the most common vulnerabilities. The network included in this repository provides redundancy from these attacks while monitoring the network traffic to expose these common exploits.
 
-A Load Balancer establishes an external IP address for which all web applications can be accessed by the internet. This ensures that the application will be highly accessible by distributing incoming network traffic uniformly across a backend server pool. In this instance the Load Balancer is also used to limit access to the web application to a single IP address for reasearch purposes of the user.
+A Load Balancer acts as a router by distributing incoming network traffic uniformily across the backend server pool. This ensures that the application will be highly accessible should a server go down. In this instance the Load Balancer is also used to limit access to the web application to our localhost for reasearch purposes.
 
-Implementing a Jump Box further restricts network exposure to the backend pool by only allowing SSH access with public key authentication to the network by the administrator.  This forces all network traffic to a single node which can be further hardened and monitored for security.  Rules were also established through the Network Security Group to limit external access to the virtual network and web applications.
+Implementing a Jump Box further restricts ineternal network exposure to the backend pool by only allowing SSH access with public key authentication to the network by the administrator.  This forces all network traffic to a single node which can be further hardened and monitored for security.
 
-Integrating an ELK server allows users to easily monitor the vulnerable web application for changes to the file systems and system metrics.  Information is collected and analyzed by Kabana through the Elasticsearch engine, Filebeat and Metricbeat are used for logging changes on the web servers to the ELK engine.  The ELK server configuration and YAML files were installed using ansible playbooks and are included in this repository.
+Integrating an ELK server allows users to easily monitor the vulnerable web application for changes to the file systems and system metrics.  Information is collected and analyzed by Kabana through the Elasticsearch engine, Filebeat and Metricbeat are used for logging changes on the web servers to the ELK engine.  
+
+All server configuration files were installed using ansible playbooks and are included in this repository.
 
 Configuration details of each machine:
 
@@ -39,9 +41,9 @@ Configuration details of each machine:
 
 In this deployment only the Jump Box can accept connections from the internet.  Access to the internal network was established through SSH with public key authentication to the Jump Box from the local host.  Internally, all servers can access one another.  
 
-Using Network Security Groups further limited acccess to the web applications by restricting accessability to TCP network traffic from the local host IP through port 80 and the ELK UI through port 5601.
+Using Network Security Groups further limited acccess to the web application by restricting accessability to TCP network traffic only from the localhost IP.
 
-A summary of the access policies within the virtual network can be found in the table below.
+A summary of the access policies can be found in the table below.
 
 | Name     | Publicly Accessible | Allowed IP Addresses |
 |----------|---------------------|----------------------|
@@ -55,7 +57,7 @@ A summary of the access policies within the virtual network can be found in the 
 
 Ansible was used to automate configuration of the ELK server, no configurations were performed manually.  Automating configurations with Ansible allows for the repeated and immediate deployment of base configurations.  This also allows for improvements to be made in an immediately deployable instance and updating multiple containers simultaneously.
 
-The playbook below implements the following tasks:
+The ELK playbook implements the following tasks:
 
 - Installs the Docker
 
@@ -91,7 +93,9 @@ The modules enabled in the Filebeat configuration .yml file enable logs to be im
 
 ### Metricbeat
 
-With Metricbeat, information can be periodically collected about the system or service monitored and sent to ELK for analysis.  Information such as CPU usage, SSH login attempts, failed sudo escalations, and CPU/RAM statistics are a few system metrics that can give an insight on what is occuring on the target server.  Metricbeat can also be used to monitor database activity and status on MySQL, Nginx, PostgreSQL, and MongoDB.
+- Metricbeat Installation Playbook
+
+With Metricbeat, information can be periodically collected about the system or service monitored and sent to ELK for analysis.  Information such as CPU usage, SSH login attempts, failed sudo escalations, and CPU/RAM statistics are a few system metrics that can give an insight on what is occuring on the target server.  Metricbeat can also be used to monitor database activity and status on MySQL, PostgreSQL, and MongoDB.
 
 ## Using the Playbook
 
