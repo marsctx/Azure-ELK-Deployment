@@ -1,8 +1,8 @@
-# ELK Stack Deployment
+# ELK Stack Deployment with Azure Virtual Network
 
 The files in this repository were used to configure the network depicted below.
 
-![ELK%20Network](ELK%20Network.png)
+![ELK%20Network](Diagram/ELK%20Network.png)
 
 These files have been tested and used to generate a live ELK deployment with an Azure container network using ansible. The information provided in this repository can be used to either recreate the entire deployment or install specific portions of the project.
 
@@ -10,10 +10,12 @@ This document contains the following details:
 
 - Description of the Topology
 - Access Policies
+  - Network Security Groups
 - ELK Configuration
+- Target Machines and Beats
   - Filebeat
   - Metricbeat
-- How to Use the Ansible Build
+- Deploy using the Playbook
 
 ## Description of the Topology
 
@@ -47,11 +49,38 @@ A summary of the access policies can be found in the table below.
 
 | Name     | Publicly Accessible | Allowed IP Addresses |
 |----------|---------------------|----------------------|
-| Jump Box | Yes                 | 172.58.99.163        |
+| Jumpbox  | Yes                 | 89.187.164.245       |
 | DVWA-1   | No                  | 10.0.0.0/24          |
 | DVWA-2   | No                  | 10.0.0.0/24          |
 | DVWA-3   | No                  | 10.0.0.0/24          |
 | ELK      | No                  | 10.0.0.0/24          |
+
+### Network Security Groups
+
+In this deployment, two seperate Network Security Groups were used to further segment the Azure network.  The Jumpbox, DVWA servers, and Load Balancer were configured under a virtual network with a Network Security Group to set a short list of rules for access control. The ELK server and ELK Network Security Group were established under it's own dedicated Azure Virtual Network and Subnet with network peering configured to allow traffic to pass between the two.
+
+#### Web Servers and SSH Access
+
+With the rules below in the Network Security Group for the web servers all traffic is initially denied while establishing the network and securing the machines.  SSH access is granted to the localhost IP to the Jumpbox which is the gateway to the internal network via port 22 Jumpbox and SSH access rules.  With the Web Access rule a dedicated connection through port 80 is granted to the localhost IP as well which gives the user visability on the DVWA.
+
+Inbound Security Rules
+
+| Name           | Port | Protocol | Source         | Destination     |
+|----------------|------|----------|----------------|-----------------|
+| DenyAllInBound | Any  | Any      | Any            | Any             |
+| SSH_Access     | 22   | TCP      | 89.187.164.245 | Any             |
+| Jumpbox_Access | 22   | TCP      | 10.0.0.4       | Virtual Network |
+| Web_Access     | 80   | TCP      | 89.187.164.245 | Virtual Network |
+
+#### ELK Server
+
+The inbound rule for the ELK Server Network Security Group allows for access to the ELK UI through port 5601 from the localhost IP.  This limits access to the ELK monitoring network that has been configured.  Having the ELK server set to DHCP the IP address changes everytime the service is booted but can be accessed by typing server.ip:5601/app/kibana#/home in your browser.
+
+Inbound Security Rules
+
+| Name       | Port | Protocol | Source         | Destination     |
+|------------|------|----------|----------------|-----------------|
+| ELK_Access | 5601 | TCP      | 89.187.164.245 | Virtual Network |
 
 ## Elk Configuration
 
