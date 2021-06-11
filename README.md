@@ -108,27 +108,27 @@ The following screenshot displays the result of running `docker ps` after succes
 
 This ELK server is configured to monitor the following machines:
 
-- 10.0.0.5
-- 10.0.0.6
-- 10.0.0.7
+- `10.0.0.5`
+- `10.0.0.6`
+- `10.0.0.7`
 
-The following Beats were installed on the web servers were installed using playbooks and configuration files similar to the ELK server.  Short descriptions of the Beats and information collected to send to the ELK server are detailed below.  Both isnstallation playbooks have a curl command to pull Beats directly from elastic.co database, install using the dpkg command, and edit the configuration files with the ones included in this repository.
+The following Beats were installed on the web servers were installed using playbooks and configuration files similar to the ELK server.  Short descriptions of the Beats and information collected to send to the ELK server are detailed below.  Both isnstallation playbooks have a `curl` command to pull Beats directly from elastic.co database, install using the `dpkg` command, and edit the configuration files with the ones included in this repository.
 
 ### Filebeat
 
-- ![Filebeat Installation Playbook](Resources/install-filebeat/filebeat.yml)
+- [Filebeat Installation Playbook](Resources/install-filebeat/filebeat.yml)
 
 Filebeat is used to collect and transfer specific log files to the ELK engine.  The configuration file can be changed to harvest various log files and tailored to a user defined application.  The modules enabled in the Filebeat configuration file extract logs from the DVWA web servers to be included in the Elasticsearch engine.
 
-Modules that were enabled are Elasticsearch, haproxy, kafka, kibana, nats, osquery, and santa with log input from /var/log/*.log and output to Elasticsearch host 10.1.0.4:9200 and dashboard loaded via Kibana API through 10.1.0.4:5601.
+Modules that were enabled are Elasticsearch, haproxy, kafka, kibana, nats, osquery, and santa with log input from `/var/log/*.log` and output to Elasticsearch host `10.1.0.4:9200` and dashboard loaded via Kibana API through `10.1.0.4:5601`.
 
 ### Metricbeat
 
-- ![Metricbeat Installation Playbook](Resources/install-metricbeat/metricbeat.yml)
+- [Metricbeat Installation Playbook](Resources/install-metricbeat/metricbeat.yml)
 
 With Metricbeat, information can be periodically collected about the system or service monitored and sent to ELK for analysis.  Information such as CPU usage, SSH login attempts, failed sudo escalations, and CPU/RAM statistics are a few system metrics that can give an insight on what is occuring on the target server.  Metricbeat can also be used to monitor database activity and status on MySQL, PostgreSQL, and MongoDB.
 
-Similar to Filebeat, Metricbeat is configured to output data collected to Elasticsearch through 10.1.0.4:9200 and dashboard loaded via Kibana API via 10.1.0.4:5601.
+Similar to Filebeat, Metricbeat is configured to output data collected to Elasticsearch through `10.1.0.4:9200` and dashboard loaded via Kibana API via `10.1.0.4:5601`.
 
 ## Using the Playbook
 
@@ -136,8 +136,8 @@ In order to use the playbook, you will need to have an Ansible control node alre
 
 SSH into the Jumbox from your localhost IP and ensure that your Ansible control node is running with the follwoing command:
 
-- sudo docker container list -a
+- `sudo docker container list -a`
 
-This will bring up the list of containers available through the Jumpbox.  Under the Status column you should read Up.  If not type sudo docker start container_name, your container name will be listed under the Names column from the previous command.  You will need to run sudo docker attach container_name to access you Ansible control node.
+This will bring up the list of containers available through the Jumpbox.  Under the Status column you should read Up.  If not type `sudo docker start container_name`, your container name will be listed under the Names column from the previous command.  You will need to run `sudo docker attach container_name` to access you Ansible control node.
 
 Now that you are in the Ansible control node follow the instructions below to deploy your ELK container and Beats discussed in the previous section.
