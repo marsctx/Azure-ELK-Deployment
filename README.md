@@ -12,7 +12,7 @@ This document contains the following details:
 - [Access Policies](#Access-Policies)
   - [Network Security Groups](#Network-Security-Groups)
 - [ELK Configuration](#ELK-Configuration)
-- [Target Machines and Beats](#Target-Machines-&-Beats)
+- [Target Machines and Beats](#Target-Machines-and-Beats)
   - [Filebeat](#Filebeat)
   - [Metricbeat](#Metricbeat)
 - [Deploy using the Playbook](#Using-The-Playbook)
@@ -148,7 +148,7 @@ Once the installation is complete you'll need to `SSH` into the newly installed 
 
 ![docker_ps_output](Images/docker_ps_output.png)
 
-## Target Machines & Beats
+## Target Machines and Beats
 
 This ELK server is configured to monitor the following machines:
 
