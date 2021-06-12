@@ -86,6 +86,48 @@ Inbound Security Rules:
 
 Ansible was used to automate configuration of the ELK server, no configurations were performed manually.  Automating configurations with Ansible allows for the repeated and immediate deployment of base configurations.  This also allows for improvements to be made in an immediately deployable instance and updating multiple containers simultaneously.
 
+From your Ansible container:
+
+- Make sure you are in the appropriate directory to run the install-elk.yml playbook by using the `cd` command to the following directory `/etc/ansible/install-elk/`.
+
+  - To run the ansible playbook use the command:
+    - `ansible-playbook install-elk.yml`
+
+- Your output on your terminal should like similar to the one below:
+
+```md
+root@53a604ecd770:/etc/ansible/install-elk# ansible-playbook install-elk.yml
+
+PLAY [Configure Elk VM with Docker] ****************************************************
+
+TASK [Gathering Facts] *****************************************************************
+ok: [10.1.0.4]
+
+TASK [Install docker.io] ***************************************************************
+changed: [10.1.0.4]
+
+TASK [Install python3-pip] *************************************************************
+changed: [10.1.0.4]
+
+TASK [Install Docker module] ***********************************************************
+changed: [10.1.0.4]
+
+TASK [Increase virtual memory] *********************************************************
+changed: [10.1.0.4]
+
+TASK [Increase virtual memory on restart] **********************************************
+changed: [10.1.0.4]
+
+TASK [download and launch a docker elk container] **************************************
+changed: [10.1.0.4]
+
+TASK [Enable service docker on boot] **************************************
+changed: [10.1.0.4]
+
+PLAY RECAP *****************************************************************************
+10.1.0.4                   : ok=1    changed=7    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+```
+
 The ELK playbook implements the following tasks:
 
 - Installs the Docker
@@ -122,33 +164,11 @@ Filebeat is used to collect and transfer specific log files to the ELK engine.  
 
 Modules that were enabled are Elasticsearch, haproxy, kafka, kibana, nats, osquery, and santa with log input from `/var/log/*.log` and output to Elasticsearch host `10.1.0.4:9200` and dashboard loaded via Kibana API through `10.1.0.4:5601`.
 
-### Metricbeat
-
-- [Metricbeat Installation Playbook](Resources/install-metricbeat/metricbeat.yml)
-
-With Metricbeat, information can be periodically collected about the system or service monitored and sent to ELK for analysis.  Information such as CPU usage, `SSH` login attempts, failed `sudo` escalations, and CPU/RAM statistics are a few system metrics that can give an insight on what is occuring on the target server.  Metricbeat can also be used to monitor database activity and status on MySQL, PostgreSQL, and MongoDB.
-
-Similar to Filebeat, Metricbeat is configured to output data collected to Elasticsearch through `10.1.0.4:9200` and dashboard loaded via Kibana API via `10.1.0.4:5601`.
-
-## Using the Playbook
-
-In order to use the playbook, you will need to have an Ansible control node already configured.  The jump box in this deployment was used for this purpose.
-
-`SSH` into the Jumbox from your `localhost` IP and ensure that your Ansible control node is running with the follwoing command:
-
-- `sudo docker container list -a`
-
-This will bring up the list of containers available through the Jumpbox.  Under the Status column you should read `Up`.  If not run:
-
-- `sudo docker start [container_name]`
-  - Your container name will be listed under the Names column from the previous command.
-- `sudo docker attach [container_name]` to access you Ansible control node.
-
-Now that you are in the Ansible control node follow the instructions below to deploy your ELK container and Beats discussed in the previous section.
+From your Ansible 
 
 - Filebeat Installation should give an output similar to the one below:
 
-```js
+```md
 root@53a604ecd770:/etc/ansible/install-filebeat/tasks# ansible-playbook filebeat.yml
 
 PLAY [Installing and Launch Filebeat] *******************************************************************************
@@ -158,7 +178,7 @@ ok: [10.0.0.5]
 ok: [10.0.0.6]
 ok: [10.0.0.7]
 
-TASK [Download Filebeat deb file] ***********************************************************************************
+TASK [Download Filebeat deb] ****************************************************************************************
 [WARNING]: Consider using the get_url or uri module rather than running 'curl'.  If you need to use command because
 get_url or uri is insufficient you can add 'warn: false' to this command task or set 'command_warnings=False' in
 ansible.cfg to get rid of this message.
@@ -184,17 +204,17 @@ changed: [10.0.0.5]
 changed: [10.0.0.6]
 changed: [10.0.0.7]
 
-TASK [Setup filebeat] ***********************************************************************************************
+TASK [Setup Filebeat] ***********************************************************************************************
 changed: [10.0.0.5]
 changed: [10.0.0.6]
 changed: [10.0.0.7]
 
-TASK [Start filebeat service] ***************************************************************************************
+TASK [Start Filebeat service] ***************************************************************************************
 changed: [10.0.0.5]
 changed: [10.0.0.6]
 changed: [10.0.0.7]
 
-TASK [Enable filebeat on boot] **************************************************************************************
+TASK [Enable Filebeat on boot] **************************************************************************************
 changed: [10.0.0.5]
 changed: [10.0.0.6]
 changed: [10.0.0.7]
@@ -204,3 +224,31 @@ PLAY RECAP *********************************************************************
 10.0.0.6                   : ok=7    changed=6    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
 10.0.0.7                   : ok=7    changed=6    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
 ```
+
+### Metricbeat
+
+- [Metricbeat Installation Playbook](Resources/install-metricbeat/metricbeat.yml)
+
+With Metricbeat, information can be periodically collected about the system or service monitored and sent to ELK for analysis.  Information such as CPU usage, `SSH` login attempts, failed `sudo` escalations, and CPU/RAM statistics are a few system metrics that can give an insight on what is occuring on the target server.  Metricbeat can also be used to monitor database activity and status on MySQL, PostgreSQL, and MongoDB.
+
+Similar to Filebeat, Metricbeat is configured to output data collected to Elasticsearch through `10.1.0.4:9200` and dashboard loaded via Kibana API via `10.1.0.4:5601`.
+
+## Using the Playbook
+
+In order to use the playbook, you will need to have an Ansible control node already configured.  The jump box in this deployment was used for this purpose.
+
+`SSH` into the Jumbox from your `localhost` IP and ensure that your Ansible control node is running with the follwoing command:
+
+- `sudo docker container list -a`
+
+This will bring up the list of containers available through the Jumpbox.  Under the Status column you should read `Up`.  If not run:
+
+- `sudo docker start [container_name]`
+  - Your container name will be listed under the Names column from the previous command.
+- `sudo docker attach [container_name]` to access you Ansible control node.
+
+Now that you are in the Ansible control node follow the instructions below to deploy your ELK container and Beats discussed in the previous section.
+
+- ELK deployment should give a similar output to the one below:
+
+- Metricbeat installation should give an output similar to the one below:
