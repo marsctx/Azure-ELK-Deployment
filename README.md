@@ -21,9 +21,9 @@ This document contains the following details:
 
 The main purpose of this network is to utilize a load-balanced and monitored instances of DVWA, the D*mn Vulnerable Web Application.  DVWA is an intentionally exploitable website designed to allow for the most common vulnerabilities. The network included in this repository provides redundancy from these attacks while monitoring the network traffic to expose these common exploits.
 
-A Load Balancer acts as a router by distributing incoming network traffic uniformily across the backend server pool. This ensures that the application will be highly accessible should a server go down. In this instance the Load Balancer is also used to limit access to the web application to our localhost for reasearch purposes.
+A Load Balancer acts as a router by distributing incoming network traffic uniformily across the backend server pool. This ensures that the application will be highly accessible should a server go down. In this instance the Load Balancer is also used to limit access to the web application to our `localhost` for reasearch purposes.
 
-Implementing a Jump Box further restricts ineternal network exposure to the backend pool by only allowing SSH access with public key authentication to the network by the administrator.  This forces all network traffic to a single node which can be further hardened and monitored for security.
+Implementing a Jump Box further restricts ineternal network exposure to the backend pool by only allowing `SSH` access with public key authentication to the network by the administrator.  This forces all network traffic to a single node which can be further hardened and monitored for security.
 
 Integrating an ELK server allows users to easily monitor the vulnerable web application for changes to the file systems and system metrics.  Information is collected and analyzed by Kabana through the Elasticsearch engine, Filebeat and Metricbeat are used for logging changes on the web servers to the ELK engine.  
 
@@ -41,9 +41,9 @@ Configuration details of each machine:
 
 ## Access Policies
 
-In this deployment only the Jump Box can accept connections from the internet.  Access to the internal network was established through SSH with public key authentication to the Jump Box from the local host.  Internally, all servers can access one another.  
+In this deployment only the Jump Box can accept connections from the internet.  Access to the internal network was established through `SSH` with public key authentication to the Jump Box from the `localhost`.  Internally, all servers can access one another.  
 
-Using Network Security Groups further limited acccess to the web application by restricting accessability to TCP network traffic only from the localhost IP.
+Using Network Security Groups further limited acccess to the web application by restricting accessability to TCP network traffic only from the `localhost` IP.
 
 A summary of the access policies can be found in the table below:
 
@@ -61,7 +61,7 @@ In this deployment, two seperate Network Security Groups were used to further se
 
 #### Web Servers NSG
 
-With the rules below in the Network Security Group for the web servers all traffic is initially denied while establishing the network and securing the machines.  SSH access is granted to the localhost IP to the Jumpbox which is the gateway to the internal network via port 22 Jumpbox and SSH access rules.  With the Web Access rule a dedicated connection through port 80 is granted to the localhost IP as well which gives the user visability on the DVWA.
+With the rules below in the Network Security Group for the web servers all traffic is initially denied while establishing the network and securing the machines.  `SSH` access is granted to the `localhost` IP to the Jumpbox which is the gateway to the internal network via port `22` Jumpbox and `SSH` access rules.  With the Web Access rule a dedicated connection through port `80` is granted to the `localhost` IP as well which gives the user visability on the DVWA.
 
 Inbound Security Rules:
 
@@ -74,7 +74,7 @@ Inbound Security Rules:
 
 #### ELK Server NSG
 
-The inbound rule for the ELK Server Network Security Group allows for access to the ELK UI through port 5601 from the localhost IP.  This limits access to the ELK monitoring network that has been configured.  Having the ELK server set to DHCP the IP address changes everytime the service is booted but can be accessed by typing elk.vm.external.ip:5601/app/kibana in your browser.
+The inbound rule for the ELK Server Network Security Group allows for access to the ELK UI through port `5601` from the `localhost` IP.  This limits access to the ELK monitoring network that has been configured.  Having the ELK server set to DHCP the IP address changes everytime the service is booted but can be accessed by typing `[elk.vm.external.ip]:5601/app/kibana` in your browser.
 
 Inbound Security Rules:
 
@@ -98,7 +98,7 @@ The ELK playbook implements the following tasks:
 
 - Downloads and launches the docker ELK container
 
-<Resources/install-elk/install-elk.yml>
+![install-elk](Resources/install-elk/install-elk.yml)
 
 The following screenshot displays the result of running `docker ps` after successfully configuring the ELK instance.
 
@@ -126,7 +126,7 @@ Modules that were enabled are Elasticsearch, haproxy, kafka, kibana, nats, osque
 
 - [Metricbeat Installation Playbook](Resources/install-metricbeat/metricbeat.yml)
 
-With Metricbeat, information can be periodically collected about the system or service monitored and sent to ELK for analysis.  Information such as CPU usage, SSH login attempts, failed sudo escalations, and CPU/RAM statistics are a few system metrics that can give an insight on what is occuring on the target server.  Metricbeat can also be used to monitor database activity and status on MySQL, PostgreSQL, and MongoDB.
+With Metricbeat, information can be periodically collected about the system or service monitored and sent to ELK for analysis.  Information such as CPU usage, `SSH` login attempts, failed `sudo` escalations, and CPU/RAM statistics are a few system metrics that can give an insight on what is occuring on the target server.  Metricbeat can also be used to monitor database activity and status on MySQL, PostgreSQL, and MongoDB.
 
 Similar to Filebeat, Metricbeat is configured to output data collected to Elasticsearch through `10.1.0.4:9200` and dashboard loaded via Kibana API via `10.1.0.4:5601`.
 
@@ -134,10 +134,73 @@ Similar to Filebeat, Metricbeat is configured to output data collected to Elasti
 
 In order to use the playbook, you will need to have an Ansible control node already configured.  The jump box in this deployment was used for this purpose.
 
-SSH into the Jumbox from your localhost IP and ensure that your Ansible control node is running with the follwoing command:
+`SSH` into the Jumbox from your `localhost` IP and ensure that your Ansible control node is running with the follwoing command:
 
 - `sudo docker container list -a`
 
-This will bring up the list of containers available through the Jumpbox.  Under the Status column you should read Up.  If not type `sudo docker start container_name`, your container name will be listed under the Names column from the previous command.  You will need to run `sudo docker attach container_name` to access you Ansible control node.
+This will bring up the list of containers available through the Jumpbox.  Under the Status column you should read `Up`.  If not run:
+
+- `sudo docker start [container_name]`
+  - Your container name will be listed under the Names column from the previous command.
+- `sudo docker attach [container_name]` to access you Ansible control node.
 
 Now that you are in the Ansible control node follow the instructions below to deploy your ELK container and Beats discussed in the previous section.
+
+- Filebeat Installation should give an output similar to the one below:
+
+```js
+root@53a604ecd770:/etc/ansible/install-filebeat/tasks# ansible-playbook filebeat.yml
+
+PLAY [Installing and Launch Filebeat] *******************************************************************************
+
+TASK [Gathering Facts] **********************************************************************************************
+ok: [10.0.0.5]
+ok: [10.0.0.6]
+ok: [10.0.0.7]
+
+TASK [Download Filebeat deb file] ***********************************************************************************
+[WARNING]: Consider using the get_url or uri module rather than running 'curl'.  If you need to use command because
+get_url or uri is insufficient you can add 'warn: false' to this command task or set 'command_warnings=False' in
+ansible.cfg to get rid of this message.
+
+changed: [10.0.0.5]
+changed: [10.0.0.6]
+changed: [10.0.0.7]
+
+TASK [Install Filebeat deb] *****************************************************************************************
+[WARNING]: Consider using 'become', 'become_method', and 'become_user' rather than running sudo
+
+changed: [10.0.0.5]
+changed: [10.0.0.6]
+changed: [10.0.0.7]
+
+TASK [Edit Filebeat yml configuration file] *************************************************************************
+changed: [10.0.0.5]
+changed: [10.0.0.6]
+changed: [10.0.0.7]
+
+TASK [Enable and Configure System Module] ***************************************************************************
+changed: [10.0.0.5]
+changed: [10.0.0.6]
+changed: [10.0.0.7]
+
+TASK [Setup filebeat] ***********************************************************************************************
+changed: [10.0.0.5]
+changed: [10.0.0.6]
+changed: [10.0.0.7]
+
+TASK [Start filebeat service] ***************************************************************************************
+changed: [10.0.0.5]
+changed: [10.0.0.6]
+changed: [10.0.0.7]
+
+TASK [Enable filebeat on boot] **************************************************************************************
+changed: [10.0.0.5]
+changed: [10.0.0.6]
+changed: [10.0.0.7]
+
+PLAY RECAP **********************************************************************************************************
+10.0.0.5                   : ok=7    changed=6    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+10.0.0.6                   : ok=7    changed=6    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+10.0.0.7                   : ok=7    changed=6    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+```
