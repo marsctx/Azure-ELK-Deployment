@@ -41,7 +41,7 @@ Configuration details of each machine:
 
 ## Access Policies
 
-In this deployment only the Jump Box can accept connections from the internet.  Access to the internal network was established through `SSH` with public key authentication to the Jump Box from the `localhost`.  Internally, all servers can access one another.  
+In this deployment only the Jump Box can accept connections from the internet.  Access to the internal network was established through `SSH` with public key authentication to the Jump Box from the `localhost`.  Internally, the only access between the DVWA containers is through the Ansible control node and the `localhost`.  Public key authentication was aslo configured between the Ansible control node and the other containers in the network.
 
 Using Network Security Groups further limited acccess to the web application by restricting accessability to TCP network traffic only from the `localhost` IP.
 
@@ -50,10 +50,10 @@ A summary of the access policies can be found in the table below:
 | Name     | Publicly Accessible | Allowed IP Addresses |
 |----------|---------------------|----------------------|
 | Jumpbox  | Yes                 | 89.187.164.245       |
-| DVWA-1   | No                  | 10.0.0.0/24          |
-| DVWA-2   | No                  | 10.0.0.0/24          |
-| DVWA-3   | No                  | 10.0.0.0/24          |
-| ELK      | No                  | 10.0.0.0/24          |
+| DVWA-1   | No                  | 10.0.0.4             |
+| DVWA-2   | No                  | 10.0.0.4             |
+| DVWA-3   | No                  | 10.0.0.4             |
+| ELK      | No                  | 10.0.0.4             |
 
 ### Network Security Groups
 
