@@ -8,10 +8,10 @@ These files have been tested and used to generate a live ELK deployment with an 
 
 This document contains the following details:
 
-- [Description of the Topology](#Description%20of%20the%20Topology)
-- [Access Policies](#Access%20Policies)
-  - [Network Security Groups](#Network%20Security%20Group)
-- [ELK Configuration](#ELK%20Configuration)
+- [Description of the Topology](#Description-of-the-Topology)
+- [Access Policies](#Access-Policies)
+  - [Network Security Groups](#Network-Security-Group)
+- [ELK Configuration](#ELK-Configuration)
 - Target Machines and Beats
   - Filebeat
   - Metricbeat
