@@ -57,11 +57,15 @@ A summary of the access policies can be found in the table below:
 
 ### Network Security Groups
 
-In this deployment, two seperate Network Security Groups were used to further segment the Azure network.  The Jumpbox, DVWA servers, and Load Balancer were configured under a virtual network with a Network Security Group to set a short list of rules for access control. The ELK server and ELK Network Security Group were established under it's own dedicated Azure Virtual Network and Subnet with network peering configured to allow traffic to pass between the two.
+In this deployment, two seperate Network Security Groups were used to further segment the Azure network.  The Jumpbox, DVWA servers, and Load Balancer were configured under a virtual network with a Network Security Group to set a short list of rules for access control. 
+
+The ELK server and ELK Network Security Group were established under it's own dedicated Azure Virtual Network and Subnet with network peering configured to allow traffic to pass between the two.
 
 #### Web Servers NSG
 
-With the rules below in the Network Security Group for the web servers all traffic is initially denied while establishing the network and securing the machines.  `SSH` access is granted to the `localhostIP` to the Jumpbox which is the gateway to the internal network via port `22` Jumpbox and `SSH` access rules.  With the Web Access rule a dedicated connection through port `80` is granted to the `localhostIP` as well which gives the user visability on the DVWA.
+With the rules below in the Network Security Group for the web servers all traffic is initially denied while establishing the network and securing the machines.  `SSH` access is granted to the `localhostIP` to the Jumpbox which is the gateway to the internal network via port `22` Jumpbox and `SSH` access rules.  
+
+With the Web Access rule a dedicated connection through port `80` is granted to the `localhostIP` as well which gives the user visability on the DVWA.
 
 Inbound Security Rules:
 
