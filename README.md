@@ -10,12 +10,12 @@ This document contains the following details:
 
 - [Description of the Topology](#Description-of-the-Topology)
 - [Access Policies](#Access-Policies)
-  - [Network Security Groups](#Network-Security-Group)
+  - [Network Security Groups](#Network-Security-Groups)
 - [ELK Configuration](#ELK-Configuration)
-- Target Machines and Beats
-  - Filebeat
-  - Metricbeat
-- Deploy using the Playbook
+- [Target Machines and Beats](#Target-Machines-and-Beats)
+  - [Filebeat](#Filebeat)
+  - [Metricbeat](#Metricbeat)
+- [Deploy using the Playbook](#Using-The-Playbook)
 
 ## Description of the Topology
 
@@ -308,7 +308,7 @@ PLAY RECAP *********************************************************************
 10.0.0.7                   : ok=1    changed=7    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
 ```
 
-## Using the Playbook
+## Using The Playbook
 
 In order to use the playbook, you will need to have an Ansible control node already configured.
 
