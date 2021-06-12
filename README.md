@@ -12,7 +12,7 @@ This document contains the following details:
 - [Access Policies](#Access-Policies)
   - [Network Security Groups](#Network-Security-Groups)
 - [ELK Configuration](#ELK-Configuration)
-- [Target Machines and Beats](#Target-Machines-and-Beats)
+- [Target Machines and Beats](#Target-Machines-&-Beats)
   - [Filebeat](#Filebeat)
   - [Metricbeat](#Metricbeat)
 - [Deploy using the Playbook](#Using-The-Playbook)
