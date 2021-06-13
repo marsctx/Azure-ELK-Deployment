@@ -338,8 +338,9 @@ $ cd /etc/ansible
 # Clone Repository + IaC Files
 $ git clone https://github.com/marsctx/Azure-ELK-Deployment
 # Move Playbooks and hosts file Into `/etc/ansible`
-$ cp project-1/playbooks/* .
-$ cp project-1/files/* ./files
+$ cp Azure-ELK-Deployment/Resources/* .
+# Using `ls` should give you
+
 ```
 
 This copies the playbook files to the correct place.
