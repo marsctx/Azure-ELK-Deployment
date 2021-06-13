@@ -21,11 +21,11 @@ This document contains the following details:
 
 The main purpose of this network is to utilize a load-balanced and monitored instances of DVWA, the D*mn Vulnerable Web Application.  DVWA is an intentionally exploitable website designed to allow for the most common vulnerabilities. The network included in this repository provides redundancy from these attacks while monitoring the network traffic to expose these common exploits.
 
-A Load Balancer acts as a router by distributing incoming network traffic uniformily across the backend server pool. This ensures that the application will be highly accessible should a server go down. In this instance the Load Balancer is also used to limit access to the web application to our `localhost` for reasearch purposes.
+A Load Balancer acts as a router by distributing incoming network traffic uniformly across the backend server pool. This ensures that the application will be highly accessible should a server go down. In this instance the Load Balancer is also used to limit access to the web application to our `localhost` for research purposes.
 
-Implementing a Jump Box further restricts ineternal network exposure to the backend pool by only allowing `SSH` access with public key authentication to the network by the administrator.  This forces all network traffic to a single node which can be further hardened and monitored for security.
+Implementing a Jump Box further restricts internal network exposure to the backend pool by only allowing `SSH` access with public key authentication to the network by the administrator.  This forces all network traffic to a single node which can be further hardened and monitored for security.
 
-Integrating an ELK server allows users to easily monitor the vulnerable web application for changes to the file systems and system metrics.  Information is collected and analyzed by Kabana through the Elasticsearch engine, Filebeat and Metricbeat are used for logging changes on the web servers to the ELK engine.  
+Integrating an ELK server allows users to easily monitor the vulnerable web application for changes to the file systems and system metrics.  Information is collected and analyzed by Kabana through the Elasticsearch engine, Filebeat and Metricbeat are used for logging changes on the web servers to the ELK container.  
 
 All server configuration files were installed using ansible playbooks and are included in this repository.
 
@@ -41,9 +41,9 @@ Configuration details of each machine:
 
 ## Access Policies
 
-In this deployment only the Jump Box can accept connections from the internet.  Access to the internal network was established through `SSH` with public key authentication to the Jump Box from the `localhost`.  Internally, the only access between the DVWA containers is through the Ansible control node and the `localhostIP`.  Public key authentication was aslo configured between the Ansible control node and the other containers in the network.
+In this deployment only the Jump Box can accept connections from the internet.  Access to the internal network was established through `SSH` with public key authentication to the Jump Box from the `localhost`.  Internally, the only access between the DVWA containers is through the Ansible control node and the `localhostIP`.  Public key authentication was also configured between the Ansible control node and the other containers in the network.
 
-Using Network Security Groups further limited acccess to the web application by restricting accessability to TCP network traffic only from the `localhostIP`.
+Using Network Security Groups further limited access to the web application by restricting accessibility to TCP network traffic only from the `localhostIP`.
 
 A summary of the access policies can be found in the table below:
 
@@ -59,13 +59,13 @@ A summary of the access policies can be found in the table below:
 
 In this deployment, two seperate Network Security Groups were used to further segment the Azure network.  The Jumpbox, DVWA servers, and Load Balancer were configured under a virtual network with a Network Security Group to set a short list of rules for access control. 
 
-The ELK server and ELK Network Security Group were established under it's own dedicated Azure Virtual Network and Subnet with network peering configured to allow traffic to pass between the two.
+The ELK server and ELK Network Security Group were established under its own dedicated Azure Virtual Network and Subnet with network peering configured to allow traffic to pass between the two.
 
 #### Web Servers NSG
 
 With the rules below in the Network Security Group for the web servers all traffic is initially denied while establishing the network and securing the machines.  `SSH` access is granted to the `localhostIP` to the Jumpbox which is the gateway to the internal network via port `22` Jumpbox and `SSH` access rules.  
 
-With the Web Access rule a dedicated connection through port `80` is granted to the `localhostIP` as well which gives the user visability on the DVWA.
+With the Web Access rule a dedicated connection through port `80` is granted to the `localhostIP` as well which gives the user visibility on the DVWA.
 
 Inbound Security Rules:
 
@@ -78,7 +78,7 @@ Inbound Security Rules:
 
 #### ELK Server NSG
 
-The inbound rule for the ELK Server Network Security Group allows for access to the ELK UI through port `5601` from the `localhostIP`.  This limits access to the ELK monitoring network that has been configured.  Having the ELK server set to DHCP the IP address changes everytime the service is booted but can be accessed by typing `[elk.vm.external.ip]:5601/app/kibana` in your browser.
+The inbound rule for the ELK Server Network Security Group allows for access to the ELK UI through port `5601` from the `localhostIP`.  This limits access to the ELK monitoring network that has been configured.  Having the ELK server set to DHCP the IP address changes every time the service is booted but can be accessed by typing `[elk.vm.external.ip]:5601/app/kibana` in your browser.
 
 Inbound Security Rules:
 
@@ -160,15 +160,15 @@ This ELK server is configured to monitor the following machines:
 - `10.0.0.6`
 - `10.0.0.7`
 
-The following Beats were installed on the web servers using playbooks and configuration files similar to the ELK container.  Short descriptions of the Beats and information collected to send to the ELK server are detailed below.  Both isnstallation playbooks have a `curl` command to pull Beats directly from [elastic.co](https://www.elastic.co/downloads/beats/) database, install using the `dpkg` command, and edit the configuration files with the ones included in this repository.
+The following Beats were installed on the web servers using playbooks and configuration files similar to the ELK container.  Short descriptions of the Beats and information collected to send to the ELK server are detailed below.  Both installation playbooks have a `curl` command to pull Beats directly from [elastic.co](https://www.elastic.co/downloads/beats/) database, install using the `dpkg` command, and edit the configuration files with the ones included in this repository.
 
 ### Filebeat
 
+Filebeat is used to collect and transfer specific log files to the ELK engine.  The configuration file can be changed to harvest various log files tailored to a user defined application.  The modules enabled in the Filebeat configuration file extract logs from the DVWA web servers to be included in the Elasticsearch engine.
+
+Modules that were enabled are Elasticsearch, haproxy, kafka, kibana, nats, osquery, and santa with log input from `/var/log/*.log` and output to Elasticsearch host `10.1.0.4:9200`, as well as loaded via Kibana API through `10.1.0.4:5601`.
+
 - [Filebeat Installation Playbook](Resources/install-filebeat/filebeat.yml)
-
-Filebeat is used to collect and transfer specific log files to the ELK engine.  The configuration file can be changed to harvest various log files and tailored to a user defined application.  The modules enabled in the Filebeat configuration file extract logs from the DVWA web servers to be included in the Elasticsearch engine.
-
-Modules that were enabled are Elasticsearch, haproxy, kafka, kibana, nats, osquery, and santa with log input from `/var/log/*.log` and output to Elasticsearch host `10.1.0.4:9200`, as well as a dashboard loaded via Kibana API through `10.1.0.4:5601`.
 
 From your Ansible container:
 
@@ -240,11 +240,11 @@ PLAY RECAP *********************************************************************
 
 ### Metricbeat
 
+With Metricbeat, information can be periodically collected about the system or service monitored and sent to Elasticsearch for the data to be stored and analyzed.  Information such as CPU usage, `SSH` login attempts, failed `sudo` escalations, and CPU/RAM statistics are a few system metrics that can give an insight on what is occurring on the target server.  Metricbeat has the ability to use modules that can be used to monitor certain services and systems on different hosts.
+
+Similar to Filebeat, Metricbeat is configured to output data collected to Elasticsearch through `10.1.0.4:9200` and loaded via Kibana API via `10.1.0.4:5601`.
+
 - [Metricbeat Installation Playbook](Resources/install-metricbeat/metricbeat.yml)
-
-With Metricbeat, information can be periodically collected about the system or service monitored and sent to ELK for analysis.  Information such as CPU usage, `SSH` login attempts, failed `sudo` escalations, and CPU/RAM statistics are a few system metrics that can give an insight on what is occuring on the target server.  Metricbeat can also be used to monitor database activity and status on MySQL, PostgreSQL, and MongoDB.
-
-Similar to Filebeat, Metricbeat is configured to output data collected to Elasticsearch through `10.1.0.4:9200` and dashboard loaded via Kibana API via `10.1.0.4:5601`.
 
 From your Ansible container:
 
@@ -316,7 +316,7 @@ PLAY RECAP *********************************************************************
 
 In order to use the playbook, you will need to have an Ansible control node already configured.
 
-`SSH` into the Jumbox from your `localhostIP` and ensure that your Ansible control node is running with the follwoing command:
+`SSH` into the Jumbox from your `localhostIP` and ensure that your Ansible control node is running with the following command:
 
 - `sudo docker container list -a`
 
@@ -371,7 +371,7 @@ The commands below will run the playbooks:
 $ cd /etc/ansible
 ## cd install-elk/
 $ ansible-playbook install-elk.yml
-## cd intstall-filebeat/
+## cd install-filebeat/
 $ ansible-playbook filebeat.yml
 ## cd install-metricbeat/
 $ ansible-playbook metricbeat.yml
