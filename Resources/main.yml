@@ -21,7 +21,7 @@
       name: docker
       state: present
 
-  - name: download and launch a docker web container
+  - name: Download and Launch a Docker Web Container
     docker_container:
       name: dvwa
       image: cyberxsecurity/dvwa
@@ -33,16 +33,3 @@
     systemd:
       name: docker
       enabled: yes
-
-- name: Install ELK Server
-  hosts: elk
-  become: true
-  roles:
-  - install-elk
-
-- name: Install Filebeat and Metricbeat on VM
-  hosts: webserver
-  become: true
-  roles:
-  - install-filebeat
-  - install-metricbeat
