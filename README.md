@@ -348,9 +348,11 @@ $ install-metricbeat/
 $ main.yml
 ```
 
-This copies the playbook files to the correct place.
+This copies the playbook files in this repository to your ansible container to deploy the ELK stack.
 
-Next, you must create a hosts file to specify which VMs to run each playbook on. Run the commands below:
+Next, run the commands below to verify the hosts file that identify the web and ELK serervs network IP.
+
+  *Note: It is important that this file reflects the IP addresses included in the network where ELK is being deployed.
 
 ```md
 $ cd /etc/ansible
