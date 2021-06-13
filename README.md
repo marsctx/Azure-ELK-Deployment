@@ -182,9 +182,9 @@ From your Ansible container:
 ```md
 root@53a604ecd770:/etc/ansible/install-filebeat/tasks# ansible-playbook filebeat.yml
 
-PLAY [Installing and Launch Filebeat] *******************************************************************************
+PLAY [Installing and Launch Filebeat] `*****************************************************************************`
 
-TASK [Gathering Facts] **********************************************************************************************
+TASK [Gathering Facts] `********************************************************************************************`
 ok: [10.0.0.7]
 ok: [10.0.0.6]
 ok: [10.0.0.5]
