@@ -78,7 +78,7 @@ Inbound Security Rules:
 
 #### ELK Server NSG
 
-The inbound rule for the ELK Server Network Security Group allows for access to the ELK UI through port `5601` from the `localhostIP`.  This limits access to the ELK monitoring network that has been configured.  Having the ELK server set to DHCP the IP address changes every time the service is booted but can be accessed by typing `[elk.vm.external.ip]:5601/app/kibana` in your browser.
+The inbound rule for the ELK Server Network Security Group allows for access to the ELK UI through port `5601` from the `localhostIP`.  This limits access to the ELK monitoring network that has been configured.  It is recommended that the ELK server Public IP should be set to Dynamic, this will set cause IP address to change when the Virtual Machine is booted but can be accessed by typing `[elk.vm.external.ip]:5601/app/kibana` in your browser.
 
 Inbound Security Rules:
 
