@@ -369,10 +369,10 @@ The commands below will run the playbooks:
 
 ```md
 $ cd /etc/ansible
-## From /install-elk/ directory
+## cd install-elk/
 $ ansible-playbook install-elk.yml
-## From /intstall-filebeat/ directory
+## cd intstall-filebeat/
 $ ansible-playbook filebeat.yml
-## From /install-metricbeat/ directory
+## cd install-metricbeat/
 $ ansible-playbook metricbeat.yml
 ```
