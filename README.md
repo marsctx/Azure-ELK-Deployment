@@ -352,7 +352,7 @@ This copies the playbook files in this repository to your ansible container to d
 
 Next, run the commands below to verify the hosts file that identify the web and ELK serervs network IP.
 
-   - Note: It is important that this file reflects the IP addresses included in the network where ELK is being deployed.
+   - <em>Note: It is important that this file reflects the IP addresses included in the network where ELK is being deployed.</em>
 
 ```md
 $ cd /etc/ansible
