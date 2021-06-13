@@ -336,7 +336,7 @@ The easiest way to copy the playbooks is to use Git:
 ```md
 $ cd /etc/ansible
 # Clone Repository + IaC Files
-$ git clone https://github.com/marsctx/Azure-ELK-Deployment
+$ git clone https://github.com/marsctx/Azure-ELK-Deployment.git
 # Move Playbooks and hosts file Into `/etc/ansible`
 $ cp Azure-ELK-Deployment/Resources/* .
 # Using `ls` should give you
