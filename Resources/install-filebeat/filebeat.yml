@@ -8,21 +8,21 @@
     command: curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-7.6.1-amd64.deb
 
   - name: Install Filebeat deb
-    command: sudo dpkg -i filebeat-7.6.1-amd64.deb
+    command: dpkg -i filebeat-7.6.1-amd64.deb
 
-  - name: Edit Filebeat yml configuration file
+  - name: Edit Filebeat configuration file
     copy:
       src: /etc/ansible/install-filebeat/filebeat-config.yml
       dest: /etc/filebeat/filebeat.yml
 
   - name: Enable and Configure System Module
-    command: sudo filebeat modules enable system
+    command: filebeat modules enable system
 
-  - name: Setup filebeat
-    command: sudo filebeat setup
+  - name: Setup Filebeat
+    command: filebeat setup
 
-  - name: Start filebeat service
-    command: sudo service filebeat start
+  - name: Start Filebeat service
+    command: service filebeat start
 
   - name: Enable filebeat on boot
     systemd:
