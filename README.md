@@ -323,7 +323,7 @@ In order to use the playbook, you will need to have an Ansible control node alre
 This will bring up the list of containers available through the Jumpbox.  Under the Status column you should read `Up`.  If not run:
 
 - `sudo docker start [container_name]`
-  - Your container name will be listed under the Names column from the previous command.
+  - Your container name will be listed under the `Names` column from the previous command.
 - `sudo docker attach [container_name]` to access you Ansible control node.
 
 To use the playbooks, we must perform the following steps:
@@ -331,15 +331,15 @@ To use the playbooks, we must perform the following steps:
 - Copy the playbooks to the Ansible Control Node
 - Run each playbook on the appropriate targets
 
-The easiest way to copy the playbooks is to use Git:
+The easiest way to copy the playbooks is to use `git`:
 
 ```md
 $ cd /etc/ansible
-# Clone Repository + IaC Files
+## Clone Repository + Playbooks
 $ git clone https://github.com/marsctx/Azure-ELK-Deployment.git
-# Move Playbooks and hosts file Into `/etc/ansible`
+## Copy Playbooks and hosts file Into `/etc/ansible`
 $ cp -r Azure-ELK-Deployment/Resources/* .
-# Using `ls` should output the following files and directories
+## Using `ls` should output the following files and directories
 $ ansible.cfg
 $ hosts
 $ install-elk/
