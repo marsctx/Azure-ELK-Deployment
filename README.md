@@ -21,9 +21,9 @@ This document contains the following details:
 
 The main purpose of this network is to utilize a load-balanced and monitored instances of DVWA, the D*mn Vulnerable Web Application.  DVWA is an intentionally exploitable website designed to allow for the most common vulnerabilities. The network included in this repository provides redundancy from these attacks while monitoring the network traffic to expose these common exploits.
 
-A Load Balancer acts as a router by distributing incoming network traffic uniformly across the backend server pool. This ensures that the application will be highly accessible should a server go down. In this instance the Load Balancer is also used to limit access to the web application to our `localhost` for research purposes.
+A Load Balancer acts as a router by distributing incoming network traffic uniformly across the backend server pool. This ensures that the application will be highly accessible should a server go down. In this instance the Load Balancer is also used to limit access to the web application to our `workstation` for research purposes.
 
-Implementing a Jump Box further restricts internal network exposure to the backend pool by only allowing `SSH` access with public key authentication to the network by the administrator.  This forces all network traffic to a single node which can be further hardened and monitored for security.
+Implementing a Jump Box further restricts internal network exposure to the backend pool by only allowing SSH access with public key authentication to the network by the administrator.  This forces all network traffic to a single node which can be further hardened and monitored for security.
 
 Integrating an ELK server allows users to easily monitor the vulnerable web application for changes to the file systems and system metrics.  Information is collected and analyzed by Kabana through the Elasticsearch engine, Filebeat and Metricbeat are used for logging changes on the web servers to the ELK container.  
 
@@ -41,9 +41,9 @@ Configuration details of each machine:
 
 ## Access Policies
 
-In this deployment only the Jump Box can accept connections from the internet.  Access to the internal network was established through `SSH` with public key authentication to the Jump Box from the `localhost`.  Internally, the only access between the DVWA containers is through the Ansible control node and the `localhostIP`.  Public key authentication was also configured between the Ansible control node and the other containers in the network.
+In this deployment only the Jump Box can accept connections from the internet.  Access to the internal network was established through `ssh` with public key authentication to the Jump Box from the `workstation-ip`.  Internally, the only access between the DVWA containers is through the Ansible control node and the `workstation-ip`.  Public key authentication was also established between the Ansible control node and the other containers in the network.
 
-Using Network Security Groups further limited access to the web application by restricting accessibility to TCP network traffic only from the `localhostIP`.
+Using Network Security Groups further limited access to the web application by restricting accessibility to TCP network traffic only from the `workstation-ip`.
 
 A summary of the access policies can be found in the table below:
 
@@ -59,13 +59,13 @@ A summary of the access policies can be found in the table below:
 
 In this deployment, two seperate Network Security Groups were used to further segment the Azure network.  The Jumpbox, DVWA servers, and Load Balancer were configured under a virtual network with a Network Security Group to set a short list of rules for access control. 
 
-The ELK server and ELK Network Security Group were established under its own dedicated Azure Virtual Network and Subnet with network peering configured to allow traffic to pass between the two.
+The ELK server and ELK Network Security Group were established under its own dedicated virtual network and subnet with network peering configured to allow traffic to pass between the two virtual networks.
 
 #### Web Servers NSG
 
-With the rules below in the Network Security Group for the web servers all traffic is initially denied while establishing the network and securing the machines.  `SSH` access is granted to the `localhostIP` to the Jumpbox which is the gateway to the internal network via port `22` Jumpbox and `SSH` access rules.  
+With the rules below, the Network Security Group for the web servers denied all traffic while establishing the network and securing the containers.  SSH access is granted to the `workstation-ip` to the Jumpbox, which is the gateway to the internal network, via `Jumpbox_Access` and `SSH_Access` rules.  
 
-With the Web Access rule a dedicated connection through port `80` is granted to the `localhostIP` as well which gives the user visibility on the DVWA.
+With the `Web_Access` rule a dedicated connection through port `80` is granted to the `workstation-ip` which gives the user visibility on the vulnerable web application.
 
 Inbound Security Rules:
 
@@ -78,7 +78,7 @@ Inbound Security Rules:
 
 #### ELK Server NSG
 
-The inbound rule for the ELK Server Network Security Group allows for access to the ELK UI through port `5601` from the `localhostIP`.  This limits access to the ELK monitoring network that has been configured.  It is recommended that the ELK server Public IP should be set to Dynamic, this will set cause IP address to change when the Virtual Machine is booted but can be accessed by typing `[elk.vm.external.ip]:5601/app/kibana` in your browser.
+The inbound rule for the ELK Server Network Security Group allows for access to the ELK UI through port `5601` from the `workstation-ip`.  This limits access to the ELK monitoring network that has been configured.  It is recommended that the ELK server Public IP should be set to Dynamic, this will cause the dedicated IP address to change when the virtual machine is booted.  The ELK dashboard can be accessed by typing `[elk.vm.external.ip]:5601/app/kibana` in your browser.
 
 Inbound Security Rules:
 
@@ -148,7 +148,7 @@ Then installs the following services:
 
 - Then downloads and launches the docker ELK container
 
-Once the installation is complete you'll need to `SSH` into the newly installed ELK container and run `docker ps` to verify that the container is running.
+Once the installation is complete you'll need to use the command `ssh <username>@<ELK.docker.ip>` to access the newly installed ELK container and run `docker ps` to verify that the container is running.
 
 ![docker_ps_output](Images/docker_ps_output.png)
 
@@ -160,7 +160,7 @@ This ELK server is configured to monitor the following machines:
 - `10.0.0.6`
 - `10.0.0.7`
 
-The following Beats were installed on the web servers using playbooks and configuration files similar to the ELK container.  Short descriptions of the Beats and information collected to send to the ELK server are detailed below.  Both installation playbooks have a `curl` command to pull Beats directly from [elastic.co](https://www.elastic.co/downloads/beats/) database, install using the `dpkg` command, and edit the configuration files with the ones included in this repository.
+The following Beats were installed on the web servers using playbooks and configuration files similar to the ELK container.  Short descriptions of the Beats and information collected to send to the ELK server are detailed below.  The playbooks have a `curl` command to pull Beats directly from [elastic.co](https://www.elastic.co/downloads/beats/) database, install using the `dpkg` command, and edit the configuration files with the ones included in this repository.
 
 ### Filebeat
 
@@ -240,7 +240,7 @@ PLAY RECAP *********************************************************************
 
 ### Metricbeat
 
-With Metricbeat, information can be periodically collected about the system or service monitored and sent to Elasticsearch for the data to be stored and analyzed.  Information such as CPU usage, `SSH` login attempts, failed `sudo` escalations, and CPU/RAM statistics are a few system metrics that can give an insight on what is occurring on the target server.  Metricbeat has the ability to use modules that can be used to monitor certain services and systems on different hosts.
+With Metricbeat, information can be periodically collected about the system or service monitored and sent to Elasticsearch for the data to be stored and analyzed.  Information such as CPU usage, `ssh` login attempts, failed `sudo` escalations, and CPU/RAM statistics are a few system metrics that can give an insight on what is occurring on the target server.  Metricbeat has the ability to use modules that can be used to monitor certain services and systems on different hosts.
 
 Similar to Filebeat, Metricbeat is configured to output data collected to Elasticsearch through `10.1.0.4:9200` and loaded via Kibana API via `10.1.0.4:5601`.
 
@@ -316,7 +316,7 @@ PLAY RECAP *********************************************************************
 
 In order to use the playbook, you will need to have an Ansible control node already configured.
 
-`SSH` into the Jumbox from your `localhostIP` and ensure that your Ansible control node is running with the following command:
+`ssh` into the Jumbox from your `workstation-ip` and ensure that your Ansible control node is running with the following command:
 
 - `sudo docker container list -a`
 
