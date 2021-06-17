@@ -242,7 +242,7 @@ PLAY RECAP *********************************************************************
 
 With Metricbeat, information can be periodically collected about the system or service monitored and sent to Elasticsearch for the data to be stored and analyzed.  Information such as CPU usage, `ssh` login attempts, failed `sudo` escalations, and CPU/RAM statistics are a few system metrics that can give an insight on what is occurring on the target server.  Metricbeat has the ability to use modules that can be used to monitor certain services and systems on different hosts.
 
-Similar to Filebeat, Metricbeat is configured to output data collected to Elasticsearch through `10.1.0.4:9200` and loaded via Kibana API via `10.1.0.4:5601`.
+Similar to Filebeat, Metricbeat is configured to output data collected to Elasticsearch through `10.1.0.4:9200` and loaded via Kibana API through `10.1.0.4:5601`.
 
 - [Metricbeat Installation Playbook](Resources/install-metricbeat/metricbeat.yml)
 
