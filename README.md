@@ -97,7 +97,7 @@ From your Ansible container:
   - To run the ansible playbook use the command:
     - `ansible-playbook install-elk.yml`
 
-- Your output on your terminal should like similar to the one below:
+- Your output on your terminal should look similar to the one below:
 
 ```md
 root@53a604ecd770:/etc/ansible/install-elk# ansible-playbook install-elk.yml
